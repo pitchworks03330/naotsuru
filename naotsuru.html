@@ -1010,6 +1010,7 @@
       <button class="homebar" id="homeBtn" disabled>🏠 さばく <span class="cnt" id="basketCnt">0</span></button>
       <button class="baitbar" id="baitPickBtn" style="grid-column:1/-1">🎣 エサ：なし</button>
       <button class="bugbar" id="viewBtn" style="grid-column:1/-1; background:rgba(255,255,255,.1); box-shadow:inset 0 0 0 1px rgba(255,255,255,.18); color:#cfe3e6">👀 さかなを ながめる</button>
+      <button class="bugbar" id="rankBtn" style="grid-column:1/-1; background:rgba(255,202,77,.16); box-shadow:inset 0 0 0 1px rgba(255,202,77,.45); color:#ffd978">🏆 おかね ランキング</button>
       <button class="bugbar" id="shareBtn" style="grid-column:1/-1; background:linear-gradient(#ffd85c,#f0a92c); box-shadow:0 3px 0 #b57e18; color:#3a2a00; font-family:var(--deco); font-size:13px">🔗 このゲームを ともだちに おしえる</button>
       <button class="bugbar" id="announceBtn" style="grid-column:1/-1; background:rgba(255,144,90,.16); box-shadow:inset 0 0 0 1px rgba(255,144,90,.4); color:#ffb090">📢 おしらせ を みる</button>
       <button class="bugbar" id="feedbackBtn" style="grid-column:1/-1; background:rgba(127,208,198,.14); box-shadow:inset 0 0 0 1px rgba(127,208,198,.3); color:#7fd0c6">💌 かんそう</button>
@@ -1119,6 +1120,20 @@
       <button class="close" id="feedbackClose">とじる</button>
     </div>
     <div id="fbThanks" class="fbthanks">💌 ありがとう！ かんそうを うけとったよ。</div>
+  </div>
+  <div class="modal fbmodal" id="rankModal">
+    <h2>🏆 おかね ランキング</h2>
+    <div class="sub" style="text-align:center;opacity:.85;font-size:12px;margin:-4px 0 8px">みんなの もっている おかね トップ3</div>
+    <div class="vrank" id="rankBody"></div>
+    <div class="sub" id="rankStatus" style="text-align:center;font-size:12px;margin:4px 0 0;min-height:18px"></div>
+    <div class="fbform">
+      <label class="fblabel">なまえ（8もじ まで）</label>
+      <input id="rankName" class="fbinput" type="text" maxlength="8" placeholder="ランキングに のる なまえ">
+    </div>
+    <div class="fbrow">
+      <button class="close" id="rankJoin" style="flex:1.4; background:linear-gradient(#ffd85c,#f0a92c); box-shadow:0 3px 0 #b57e18; color:#3a2a00">この なまえで さんか する</button>
+      <button class="close" id="rankClose" style="flex:1">とじる</button>
+    </div>
   </div>
   <div class="modal" id="baitModal">
     <h2>🎣 エサを えらぶ</h2>
@@ -1351,52 +1366,7 @@
   ];
   const AUTOFISH_INTERVAL=2600; // ms between automatic casts once running
   const VERSION_HISTORY=[
-    {v:'1', t:'なおつる、こうかい', items:['タップで つりを たのしめる きほんの ゲームを つくったよ']},
-    {v:'1.7', t:'2つの いけ・おかね', items:['「しずかな いけ」と「ゴミの いけ」を ついか','さかなを うって おかねを かせげるように','ショップで どうぐと じょしゅを かえるように']},
-    {v:'1.91', t:'じかんたい・てんき・ぬしのふち', items:['あさ・ひる・ゆうがた・よる が うつりかわるように','はれ・くもり・あめ の てんきを ついか','じょしゅを ぜんいん やとうと「ぬしのふち」が とうじょう']},
-    {v:'2', t:'およがせ釣り', items:['こざかなを エサに して おおものを ねらえるように','いけすに こざかなを ためられるように']},
-    {v:'2.13', t:'そだてる・BGM', items:['さかなを そだてる「そだて池」を ついか','BGMを おける きのう を ついか、なんパターンか えらべるように']},
-    {v:'2.23', t:'たいせん', items:['おなじ たんまつで じゅんばんに あそべる「たいせん」を ついか']},
-    {v:'2.4', t:'ナゾの石・おがさわらいけ', items:['ゴミの いけ・ぬしのふちで「ナゾの石」が みつかるように','3つ あつめると「おがさわらいけ」が ひらくように']},
-    {v:'2.5', t:'いえに かえって さばく', items:['つった さかなを「かご」に いれて もちかえれるように','さばきばで さかなを さばいて うるように','「さばき機」「じどうつりき」を くみたてられるように']},
-    {v:'2.71', t:'さどの うみ・ちず', items:['きんの かたまりが つれる「さどの うみ」を ついか','いけの きりかえを「ちず」がめんに へんこう、おかねで かいほうする ように']},
-    {v:'2.8', t:'みなと・はま・テトラポット', items:['おおきな うみの さかなが つれる「みなと」を ついか','こざかなを つかった およがせ釣りが できる「はま」を ついか','するめで あそぶ「カニつり」テトラポットを ついか']},
-    {v:'3', t:'セーブ・バグほうこく', items:['コードで きろくを もちはこべる セーブきのうを ついか','みんなで つかえる バグほうこく けいじばんを ついか','とくべつな えさ（するめ・えもの えさ）を ショップで かえるように']},
-    {v:'3.01', t:'きんを みがく・のぎのう', items:['さどの きんの かたまりを タップで「みがいて」たかく うれるように、みがくと さきんも みつかる','はたけで やさいを そだてる「のぎのう」を ついか、そだてた やさいは うっても エサにも できる','つりちゅうに ぐうぜん レアな タネが てにはいるように（ごく まれに でんせつの タネも…）']},
-    {v:'3.06', t:'ヘルプ・みため の せいり', items:['なやんだ ときに みられる「❓ ヘルプ」を ついか','ボタンを ぜんたいてきに コンパクトに、したの ボタンは 2れつに せいり','カニつりで いしが じゃまして ボタンが おせない ふぐあいを しゅうせい','いけの ちずボタンが かくれて おせなく なる ふぐあいを しゅうせい']},
-    {v:'3.11', t:'はまで およぎながら つる', items:['はまで「🏊 およぎながら つる」ミニゲームを ついか。やじるしで およいで、さかなに ちかづいて つかまえる','さかなを つかまえても うみから あがらず、つづけて つかまえられるように']},
-    {v:'3.16', t:'おきどき の えんしゅつ', items:['なおつるを ひらいた ときに、うきが おちて はもんが ひろがり、タイトルが うかびあがる えんしゅつを ついか','えんしゅつちゅうに さかなが およいで よこぎるように']},
-    {v:'3.2', t:'そだて池が すいそうに', items:['そだて池を リストひょうじから、じっさいに さかなが およぐ すいそうの みための がめんに つくりなおし','そだて池の じょうげんを てっぱい。なんびきでも そだてられるように']},
-    {v:'3.3', t:'さかなを ながめる', items:['いまの いけの さかなを おおきく ゆっくり みられる「👀 さかなを ながめる」を ついか。みるだけで なにも おこらない','みたい さかなを じぶんで えらべる「🐟 えらぶ」きのうを ついか。ボス・でんせつきゅうも ふくめて ぜんしゅるい えらべる']},
-    {v:'3.39', t:'じどうセーブ', items:['ページを ひらきなおしても、まえかいの つづきから はじまる「じどうセーブ」を ついか（この たんまつ・この ブラウザ げんてい）','きんを みがく タップすうを 147かいに とうい']},
-    {v:'3.49', t:'はじめの おかね・リセット', items:['はじめから おかね1000円 もった じょうたいで スタートするように','がめんから いつでも おせる「🔄 さいしょから やりなおす」ボタンを ついか（かくにん ダイアログつき）']},
-    {v:'3.5', t:'山菜取り・きのこ狩り（あそべるように）', items:['⛰️ボタンを おすと 5つの 山から えらべるように','山を あるきまわって、山菜・きのこ・山ガニを とる ミニゲームを ついか（やじるし／ボタンで いどう、「とる」で しゅうかく）','とったものを「うる」で おかねに かえられるように']},
-    {v:'3.6', t:'山菜プランター（そだてる）', items:['とったものを「🌱そだてる」で なえに して しまえるように','あたらしい「🪴プランター」で なえを うえて、そだちぐあいを 見ながら そだてられるように','そだてて うると ねだんが 2ばいに！（すぐ うるか、そだてて 倍にするか えらべる）']},
-    {v:'3.65', t:'バグほうこくを さくじょ', items:['「🐛 バグ」ボタンと ほうこくフォームを なくしたよ']},
-    {v:'3.75', t:'エサを 1つの まどから えらべるように', items:['3つに わかれていた エサの ボタンを「🎣 エサ」ひとつに まとめたよ','「🎣 エサ」を おすと、なし・やさいエサ・ちいさいえさ・おおきいえさ から えらべる']},
-    {v:'3.85', t:'およがせも エサ欄に', items:['「🐟 およがせ」ボタンを なくして、「🎣 エサ」の なかに いれたよ','エサ欄で「なし・やさい・ちいさい・およがせ・おおきい」から えらべる']},
-    {v:'3.95', t:'おおきいえさを 単独エサに', items:['「おおきいえさ」を およがせと 組み合わせずに 単独で つかえるように','おおものが つれやすくなる かわりに、やく38％（6かいに2〜3かい）で エサだけ とられて にげられる']},
-    {v:'4.15', t:'ぜんたいを 明るい色に', items:['空・水・山・下の ボタンらんの 色を、ぜんたいに あかるい トーンに してみたよ','時間帯（あさ・ひる・ゆうがた・よる）や 池ごとの 色も あかるくした']},
-    {v:'4.35', t:'かんそうフォームを アプリの中で', items:['「💌 かんそう」を おすと、ゲームを はなれずに アプリの中の ポップアップで かんそうフォームが ひらくように']},
-    {v:'4.55', t:'かんそうを アプリ内で かいて せいさくしゃが 見られるように', items:['「💌 かんそう」を なまえ・ほし・ぶんしょうで かける フォームに（この たんまつに ほぞん）','せいさくしゃ せっていに「とどいた かんそう」を ついか。よんだり さくじょ できる']},
-    {v:'4.75', t:'旅人が やってくるように', items:['ときどき いけの ほとりに「🎁 たびびと」が あらわれ、はなしかけると おかねや エサなどを くれる','ときどき「🛒 ぎょうしょうにん」が あらわれ、エサや めずらしい タネを うってくれる']},
-    {v:'5.45', t:'ゲームの 1日を 5ふんに', items:['じかんたい（あさ→ひる→ゆうがた→よる）の きりかわりを 75びょうごとに して、ゲームの 1日が ちょうど 5ふんに なるように した']},
-    {v:'5.55', t:'たびびと と てがみが できるように', items:['「🎁 たびびと」に はなしかけると、てがみ（メール風）で かいわ できるように','せんたくしで へんじを して、こうかんするほど なかよし度が あがる','3通ごとに とくべつな おれい（エサや めずらしい タネ）が もらえる']},
-    {v:'5.65', t:'たびびと と 何回でも てがみ', items:['たびびとが いる あいだは、去らずに 何回でも てがみを こうかん できるように','おれいは その たいざい中の さいしょの 1回だけ。また べつの日に きたら また もらえる']},
-    {v:'5.75', t:'たびびと との かいわが つづくように', items:['へんじを すると、たびびとが すぐ つぎの てがみを かいてくる ように（へんじ→てがみ→へんじ… と ずっと つづく）','手紙の ネタを 5しゅるい から 11しゅるいに ふやして、おなじ話が つづけて でないように した','いつでも「✉️ てがみを おえる」で おわれる']},
-    {v:'5.8', t:'ショップから いつでも てがみ', items:['たびびとが いなくても、いつでも てがみで はなせる ように（おれいは たびびとが いる ときだけ）']},
-    {v:'5.9', t:'てがみボタンを うえの ボタン列に', items:['「📮 てがみ」ボタンを がめん うえの まるい ボタン列（🎵⚔️🌱🛒📖）に いどう','ショップの 中の てがみボタンは なくした']},
-    {v:'6.0', t:'旅人が 100人に！ 何人とも てがみ', items:['旅人が なまえ・すがた ちがいで 100人 とうじょう。まいかい ちがう ひとが やってくる','はなしかけた 旅人は 📮の 一覧に くわわって、いつでも てがみで はなせる','旅人 ひとりずつ 「なかよし度（○通）」を きろく。おれいは その 旅人が きている ときの さいしょの 1回だけ']},
-    {v:'6.1', t:'手紙の 話を 50しゅるいに', items:['たびびとの てがみの ネタを 11から 50しゅるいに ふやしたよ','きせつ・てんき・たべもの・まつり・おもいで など、いろんな 話が でるように なった']},
-    {v:'6.2', t:'手紙の 話を 150しゅるいに', items:['たびびとの てがみの ネタを 50から 150しゅるいに ふやしたよ','しぜん・いきもの・むかしあそび・たびの であい など、はなしの はばが ぐっと ひろがった']},
-    {v:'6.3', t:'てがみの へんじが 10こに', items:['てがみの へんじの せんたくしを 10こに ふやしたよ','その 話 せんようの へんじ 2つに くわえ、どの てがみでも つかえる きょうつうの へんじが ランダムで まざる']},
-    {v:'6.4', t:'へんじで つぎの 話題が かわるように', items:['てがみの へんじを 3つに して、えらんだ へんじの 気分（あかるい・しんみり・きょうみ）で つぎの 話題が えらばれるように した','あかるい へんじを えらぶと あかるい話、しんみりを えらぶと しっとりした話が つづきやすい']},
-    {v:'6.5', t:'旅人に プレゼント できるように', items:['てがみ画面に「🎁 プレゼントを あげる」を ついか','エサ・タネ・山菜きのこ・そだてている 魚 から えらんで 旅人に あげられる','あげると なかよし度が あがる（魚と めずらしいタネは +2）']},
-    {v:'6.6', t:'エサを あげると 旅人が 魚を つってくれる', items:['旅人に エサを あげると、その エサで 魚を つってきて、うれた お金の 2/3を その場で くれる','あげた エサに よって つってくる 魚（お金）が かわる（おおきいえさ ほど おおもの）']},
-    {v:'6.7', t:'かんそうフォームの もじを 見やすく', items:['「なまえ」「ほし」「かんそう」の もじが うすくて 見えにくかったのを、大きく はっきり した色に なおした']},
-    {v:'6.8', t:'カニの そだて池 エサ代を 15円に', items:['そだて池（水槽）で カニを そだてる ときの エサやり代を 15円に した（さかなは これまでどおり 12円）']},
-    {v:'6.9', t:'そだて池の カニの みため を ついか', items:['そだて池（水槽）で カニが さかなと おなじ みため だったのを、カニらしい 🦀の みため に した','図鑑などの ちいさな 絵でも カニが カニらしく みえるように なった']},
-    {v:'7.0', t:'そだて池に 一覧を ついか', items:['そだて池の うえに、そだてている さかな・カニの 一覧を ひょうじ','一覧から 1ぴきずつ エサあげ・うる が できるように','「🪙 まとめて うる」ボタンで ぜんぶ いちどに うれるように した']},
+    {v:'1', t:'なおつる、こうかい', items:['なおつるを せいしきに こうかい したよ','ここまでに つくった ぜんぶの あそびを まとめて、バージョン1に したよ','みんなの おかね トップ3が みられる「🏆 おかね ランキング」を ついか','ページを ひらきなおしても つづきから あそべるように、じどうセーブを なおしたよ']},
   ];
   const HELP_TOPICS=[
     {id:'basic', label:'🎣 きほん', title:'つりの きほん', body:[
@@ -3708,6 +3678,7 @@
   const SHARE_URL='https://naoturu.netlify.app/';
   const FEEDBACK_FORM_URL='https://wondrous-tulumba-8cee27.netlify.app/';
   const ANNOUNCE_URL='https://canva.link/uygvhb5ovuoqxuh';
+  const RANKING_URL='https://script.google.com/macros/s/AKfycbzwcwOoeJfnIWsPiBCPRwc7lnTW_X5bIKFn3ca0YSiclf8m90HhnKNDtSNAIfmTMbaZ/exec'; // おかね ランキングの ほぞんさき（Google Apps Script の ウェブアプリ URL）
 
   function storageAvailable(){ return typeof window!=='undefined' && window.storage && typeof window.storage.get==='function' && typeof window.storage.set==='function'; }
 
@@ -3716,6 +3687,7 @@
   const SAVE_VER=1;
   let saveBusy=false;
   const AUTOSAVE_KEY='autosave:v1';
+  const LOCAL_AUTOSAVE_KEY='naotsuru:autosave:v1'; // window.storage が ない とき（ふつうの Webページ）の ほぞんさき
   const AUTOSAVE_INTERVAL=10000; // ms between automatic background saves
   let autosaveTimer=null, autosaveDirty=false, autosaveBusy=false, autosaveLoaded=false;
 
@@ -3793,8 +3765,17 @@
 
   // ---- auto-save (personal storage, no code needed) ----
   function markAutosaveDirty(){ autosaveDirty=true; }
+  function localAutosaveWrite(){
+    try{ localStorage.setItem(LOCAL_AUTOSAVE_KEY, JSON.stringify(collectSave())); autosaveDirty=false; }
+    catch(e){ console.warn('[autosave] local write failed:', e); }
+  }
+  function localAutosaveLoad(){
+    try{ const raw=localStorage.getItem(LOCAL_AUTOSAVE_KEY); if(!raw) return false; return applySave(JSON.parse(raw)); }
+    catch(e){ console.warn('[autosave] local load failed:', e); return false; }
+  }
   async function autosaveNow(){
-    if(!storageAvailable() || autosaveBusy) return;
+    if(!storageAvailable()){ localAutosaveWrite(); return; }
+    if(autosaveBusy) return;
     autosaveBusy=true;
     try{
       const data=collectSave();
@@ -3804,7 +3785,7 @@
     autosaveBusy=false;
   }
   async function autosaveLoad(){
-    if(!storageAvailable()) return false;
+    if(!storageAvailable()) return localAutosaveLoad();
     for(let attempt=0; attempt<2; attempt++){
       try{
         const res=await window.storage.get(AUTOSAVE_KEY, false);
@@ -4331,6 +4312,60 @@
     $('#feedbackSend').style.display='none'; $('#fbThanks').classList.add('show');
     setTimeout(()=>feedbackModal.classList.remove('show'), 1400);
   });
+  // ---- おかね ランキング（みんなの トップ3・そとの サーバーに きろく）----
+  const RANK_KEY='naotsuru:rank';
+  const RANK_SEND_INTERVAL=120000; // ms: さんかちゅうは この かんかくで おかねを おくる
+  const rankModal=$('#rankModal');
+  let rankLastSent=-1, rankBusy=false;
+  function rankEsc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function rankProfile(){ try{ const p=JSON.parse(localStorage.getItem(RANK_KEY)||'null'); return (p && p.id && p.name) ? p : null; }catch(e){ return null; } }
+  function rankNewId(){ const chars='abcdefghijklmnopqrstuvwxyz0123456789'; let s=''; for(let i=0;i<20;i++) s+=chars[Math.floor(Math.random()*chars.length)]; return s; }
+  function rankStatus(t){ $('#rankStatus').textContent=t; }
+  function rankRender(top){
+    const medal=['🥇','🥈','🥉'];
+    $('#rankBody').innerHTML = (top && top.length)
+      ? top.slice(0,3).map((r,i)=>`<div class="vres ${i===0?'win':''}"><div class="vrk">${medal[i]}</div><div class="vresn">${rankEsc(r.name)}</div><div class="vress">🪙 ${fmt(Number(r.money)||0)}</div></div>`).join('')
+      : '<div class="fbempty" style="color:#cfe3e6; opacity:.9; font-size:13px">まだ きろくが ないよ。さいしょの ひとりに なろう！</div>';
+  }
+  async function rankFetchTop(){ const res=await fetch(RANKING_URL+'?action=top'); const j=await res.json(); return j.top||[]; }
+  async function rankSend(){
+    const p=rankProfile(); if(!p) return null;
+    const amount=Math.floor(money);
+    const res=await fetch(RANKING_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({action:'submit', id:p.id, name:p.name, money:amount})});
+    const j=await res.json(); if(j.error) throw new Error(j.error);
+    rankLastSent=amount; return j;
+  }
+  async function rankRefresh(){
+    if(!RANKING_URL){ rankRender([]); rankStatus('ランキングは じゅんびちゅう だよ'); return; }
+    if(rankBusy) return; rankBusy=true; rankStatus('よみこみちゅう…');
+    try{
+      const p=rankProfile();
+      if(p && !versus){
+        const j=await rankSend(); rankRender(j.top||[]);
+        rankStatus(j.rank ? `${p.name} は いま ${j.rank}い（🪙 ${fmt(money)}）` : `${p.name} の おかね：🪙 ${fmt(money)}`);
+      } else {
+        rankRender(await rankFetchTop());
+        rankStatus(p ? '' : 'なまえを いれると ランキングに さんか できるよ');
+      }
+    }catch(e){ console.warn('[rank] failed:', e); rankStatus('⚠️ ランキングを よみこめなかった'); }
+    rankBusy=false;
+  }
+  function rankSyncForm(){ const p=rankProfile(); $('#rankName').value = p ? p.name : ''; $('#rankJoin').textContent = p ? 'なまえを かえる' : 'この なまえで さんか する'; }
+  function openRank(){ rankSyncForm(); rankModal.classList.add('show'); rankRefresh(); }
+  $('#rankBtn').addEventListener('click', openRank);
+  $('#rankClose').addEventListener('click', ()=>rankModal.classList.remove('show'));
+  $('#rankJoin').addEventListener('click', ()=>{
+    const name=$('#rankName').value.trim().slice(0,8);
+    if(!name){ toast('なまえを いれてね'); return; }
+    const old=rankProfile();
+    try{ localStorage.setItem(RANK_KEY, JSON.stringify({id: old ? old.id : rankNewId(), name})); }
+    catch(e){ toast('⚠️ この かんきょうでは さんか できません'); return; }
+    sfx.buy(); rankSyncForm(); rankRefresh();
+  });
+  setInterval(()=>{
+    if(!RANKING_URL || versus || rankBusy || !rankProfile() || Math.floor(money)===rankLastSent) return;
+    rankSend().catch(e=>console.warn('[rank] auto send failed:', e));
+  }, RANK_SEND_INTERVAL);
   announceBtn.addEventListener('click', ()=>{ window.open(ANNOUNCE_URL, '_blank', 'noopener,noreferrer'); });
   saveBtn.addEventListener('click', openSaveModal);
   verBtn.addEventListener('click', openVersionHistory);
